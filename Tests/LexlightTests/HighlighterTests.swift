@@ -67,10 +67,24 @@ final class HighlighterTests: XCTestCase {
         let languageCallCount = await engine.languageCallCount
         XCTAssertEqual(languageCallCount, 1)
     }
+
+    func testActiveEngineReportsBackingRuntime() async throws {
+        let theme = try ThemeRegistry.bundled().theme(identifier: "github-light").unwrap()
+        let highlighter = ActorHighlighter(
+            engine: FakeEngine(),
+            registry: ThemeRegistry(themes: [theme]),
+            defaultTheme: theme
+        )
+
+        let kind = await highlighter.activeEngine()
+
+        XCTAssertEqual(kind, .javaScriptCore)
+        XCTAssertEqual(kind.displayName, "JavaScriptCore")
+    }
 }
 
 private actor FakeEngine: TokenizationEngine {
-    nonisolated var kind: TokenizationEngineKind { .javaScriptCore }
+    nonisolated var kind: LexlightEngineKind { .javaScriptCore }
     private(set) var callCount = 0
     private(set) var languageCallCount = 0
 

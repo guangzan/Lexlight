@@ -24,6 +24,11 @@ let package = Package(
         .testTarget(
             name: "LexlightTests",
             dependencies: ["Lexlight"]
+        ),
+        .executableTarget(
+            name: "LexlightDemo",
+            dependencies: ["Lexlight"],
+            path: "Examples/LexlightDemo/Sources/LexlightDemo"
         )
     ],
     swiftLanguageModes: [.v6]

@@ -3,7 +3,7 @@ import WebKit
 
 @MainActor
 final class WebKitTokenizationEngine: TokenizationEngine {
-    nonisolated let kind: TokenizationEngineKind = .webKit
+    nonisolated let kind: LexlightEngineKind = .webKit
 
     private var webView: WKWebView?
     private var ready = false

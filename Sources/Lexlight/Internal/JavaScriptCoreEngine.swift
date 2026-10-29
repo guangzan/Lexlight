@@ -2,7 +2,7 @@ import Foundation
 import JavaScriptCore
 
 actor JavaScriptCoreEngine: TokenizationEngine {
-    nonisolated let kind: TokenizationEngineKind = .javaScriptCore
+    nonisolated let kind: LexlightEngineKind = .javaScriptCore
 
     private var context: JSContext?
     private var cachedLanguages: [String]?

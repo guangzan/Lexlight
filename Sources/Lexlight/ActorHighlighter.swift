@@ -32,7 +32,8 @@ public actor ActorHighlighter: Highlighter {
         try await ActorHighlighter()
     }
 
-    func activeEngine() async -> TokenizationEngineKind {
+    /// Reports which runtime is executing tokenization requests.
+    public func activeEngine() async -> LexlightEngineKind {
         await engine.kind
     }
 
