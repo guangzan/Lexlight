@@ -23,7 +23,7 @@ actor JavaScriptCoreEngine: TokenizationEngine {
         } else {
             source = try LexlightResources.javascript()
         }
-        Self.evaluate(source, in: context)
+        try Self.evaluate(source, in: context)
         guard Self.isLexlightInstalled(in: context) else {
             throw LexlightError.engineInitializationFailed(
                 "Bundled JavaScript did not install globalThis.Lexlight."
@@ -106,11 +106,13 @@ actor JavaScriptCoreEngine: TokenizationEngine {
         return context.exception == nil && result?.toBool() == true
     }
 
-    private static func evaluate(_ script: String, in context: JSContext) {
+    private static func evaluate(_ script: String, in context: JSContext) throws {
         context.exception = nil
         context.evaluateScript(script)
         if let exception = context.exception {
-            assertionFailure("Lexlight JavaScript initialization failed: \(exception)")
+            throw LexlightError.engineInitializationFailed(
+                "Bundled JavaScript failed to initialize: \(exception)"
+            )
         }
     }
 

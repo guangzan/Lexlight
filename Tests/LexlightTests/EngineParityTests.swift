@@ -37,4 +37,16 @@ final class EngineParityTests: XCTestCase {
         XCTAssertEqual(kind, javaScriptCoreIsAvailable ? .javaScriptCore : .webKit)
         await engine.shutdown()
     }
+
+    func testFactoryFallsBackToWebKitWhenJavaScriptCoreInitializationFails() async throws {
+        let engine = try await EngineFactory.makeDefault(
+            javaScriptCoreScript: #"throw new Error("unsupported WebAssembly module")"#
+        )
+        let kind = await engine.kind
+
+        XCTAssertEqual(kind, .webKit)
+        let languages = try await engine.supportedLanguages()
+        XCTAssertTrue(languages.contains("swift"))
+        await engine.shutdown()
+    }
 }
