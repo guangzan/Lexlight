@@ -1,21 +1,23 @@
 import Foundation
 
+/// An ordered, identifier-indexed collection of highlight themes.
 public struct ThemeRegistry: Sendable {
     private var themesByID: [String: HighlightTheme]
     private var orderedIDs: [String]
 
+    /// Creates a registry from custom themes, preserving their first-seen order.
     public init(themes: [HighlightTheme] = []) {
         var byID: [String: HighlightTheme] = [:]
         var order: [String] = []
-        for theme in themes {
-            if byID.updateValue(theme, forKey: theme.id) == nil {
-                order.append(theme.id)
-            }
+        for theme in themes where byID[theme.id] == nil {
+            byID[theme.id] = theme
+            order.append(theme.id)
         }
         self.themesByID = byID
         self.orderedIDs = order
     }
 
+    /// Loads the complete theme catalogue packaged with Lexlight.
     public static func bundled() throws -> ThemeRegistry {
         let url = try LexlightResources.themesURL()
         let data: Data
@@ -33,18 +35,22 @@ public struct ThemeRegistry: Sendable {
         return ThemeRegistry(themes: file.themes.map(\.highlightTheme))
     }
 
+    /// All registered themes in stable display order.
     public var allThemes: [HighlightTheme] {
         orderedIDs.compactMap { themesByID[$0] }
     }
 
+    /// Identifiers in the same order as ``allThemes``.
     public var themeIDs: [String] {
         orderedIDs
     }
 
+    /// Returns the theme with `identifier`, if registered.
     public func theme(identifier: String) -> HighlightTheme? {
         themesByID[identifier]
     }
 
+    /// Adds or replaces a theme while preserving the original ID position.
     public mutating func register(_ theme: HighlightTheme) {
         if themesByID.updateValue(theme, forKey: theme.id) == nil {
             orderedIDs.append(theme.id)

@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Lexlight
 
 final class HighlighterTests: XCTestCase {
@@ -98,18 +99,20 @@ private actor FakeEngine: TokenizationEngine {
         try Task.checkCancellation()
         return EngineResult(
             language: request.language,
-            lines: [[
-                HighlightToken(
-                    content: "let",
-                    offset: 0,
-                    foreground: request.theme.syntax[.keyword]?.foreground
-                ),
-                HighlightToken(
-                    content: String(request.source.dropFirst(3)),
-                    offset: 3,
-                    foreground: request.theme.editorForeground
-                ),
-            ]],
+            lines: [
+                [
+                    HighlightToken(
+                        content: "let",
+                        offset: 0,
+                        foreground: request.theme.syntax[.keyword]?.foreground
+                    ),
+                    HighlightToken(
+                        content: String(request.source.dropFirst(3)),
+                        offset: 3,
+                        foreground: request.theme.editorForeground
+                    ),
+                ]
+            ],
             foreground: request.theme.editorForeground,
             background: request.theme.editorBackground
         )
@@ -118,8 +121,8 @@ private actor FakeEngine: TokenizationEngine {
     func shutdown() async {}
 }
 
-private extension Optional {
-    func unwrap(file: StaticString = #filePath, line: UInt = #line) throws -> Wrapped {
+extension Optional {
+    fileprivate func unwrap(file: StaticString = #filePath, line: UInt = #line) throws -> Wrapped {
         guard let self else {
             throw LexlightError.decodingFailed("Missing fixture at \(file):\(line)")
         }

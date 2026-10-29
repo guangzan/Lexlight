@@ -59,8 +59,9 @@ actor JavaScriptCoreEngine: TokenizationEngine {
 
         let themeJSON = try ThemeJSEncoder.encode(request.theme)
         let themeValue = try Self.parseJSON(themeJSON, in: context)
-        guard let function = context.objectForKeyedSubscript("Lexlight")?
-            .objectForKeyedSubscript("tokenize")
+        guard
+            let function = context.objectForKeyedSubscript("Lexlight")?
+                .objectForKeyedSubscript("tokenize")
         else {
             throw LexlightError.engineInitializationFailed("Lexlight.tokenize is unavailable.")
         }
@@ -146,10 +147,12 @@ actor JavaScriptCoreEngine: TokenizationEngine {
     }
 
     private static func javascriptStringLiteral(_ value: String) -> String? {
-        guard let data = try? JSONSerialization.data(
-            withJSONObject: value,
-            options: [.fragmentsAllowed]
-        ) else {
+        guard
+            let data = try? JSONSerialization.data(
+                withJSONObject: value,
+                options: [.fragmentsAllowed]
+            )
+        else {
             return nil
         }
         return String(data: data, encoding: .utf8)

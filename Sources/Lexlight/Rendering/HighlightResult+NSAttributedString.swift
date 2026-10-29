@@ -1,14 +1,17 @@
 import Foundation
 
 #if canImport(AppKit)
-import AppKit
+    import AppKit
 #elseif canImport(UIKit)
-import UIKit
+    import UIKit
 #endif
 
 @MainActor
-public extension HighlightResult {
-    func nsAttributedString(baseFont: LexlightFont) -> NSAttributedString {
+extension HighlightResult {
+    /// Renders the token stream as an attributed platform string.
+    ///
+    /// - Parameter baseFont: The platform monospaced font applied before token traits.
+    public func nsAttributedString(baseFont: LexlightFont) -> NSAttributedString {
         let output = NSMutableAttributedString(string: source)
         let fullRange = NSRange(location: 0, length: output.length)
         let baseForeground = foreground?.platformColor

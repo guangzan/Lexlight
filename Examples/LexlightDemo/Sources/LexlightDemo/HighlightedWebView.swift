@@ -3,41 +3,41 @@ import SwiftUI
 import WebKit
 
 #if os(macOS)
-struct HighlightedWebView: NSViewRepresentable {
-    let source: String
-    let language: String
-    let theme: HighlightTheme?
+    struct HighlightedWebView: NSViewRepresentable {
+        let source: String
+        let language: String
+        let theme: HighlightTheme?
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
+        func makeCoordinator() -> Coordinator {
+            Coordinator()
+        }
 
-    func makeNSView(context: Context) -> WKWebView {
-        makeWebView()
-    }
+        func makeNSView(context: Context) -> WKWebView {
+            makeWebView()
+        }
 
-    func updateNSView(_ webView: WKWebView, context: Context) {
-        update(webView, coordinator: context.coordinator)
+        func updateNSView(_ webView: WKWebView, context: Context) {
+            update(webView, coordinator: context.coordinator)
+        }
     }
-}
 #else
-struct HighlightedWebView: UIViewRepresentable {
-    let source: String
-    let language: String
-    let theme: HighlightTheme?
+    struct HighlightedWebView: UIViewRepresentable {
+        let source: String
+        let language: String
+        let theme: HighlightTheme?
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator()
-    }
+        func makeCoordinator() -> Coordinator {
+            Coordinator()
+        }
 
-    func makeUIView(context: Context) -> WKWebView {
-        makeWebView()
-    }
+        func makeUIView(context: Context) -> WKWebView {
+            makeWebView()
+        }
 
-    func updateUIView(_ webView: WKWebView, context: Context) {
-        update(webView, coordinator: context.coordinator)
+        func updateUIView(_ webView: WKWebView, context: Context) {
+            update(webView, coordinator: context.coordinator)
+        }
     }
-}
 #endif
 
 extension HighlightedWebView {
@@ -60,11 +60,12 @@ extension HighlightedWebView {
         guard coordinator.signature != signature else { return }
         coordinator.signature = signature
         do {
-            webView.loadHTMLString(try WebDocument.html(
-                source: source,
-                language: language,
-                theme: theme
-            ), baseURL: nil)
+            webView.loadHTMLString(
+                try WebDocument.html(
+                    source: source,
+                    language: language,
+                    theme: theme
+                ), baseURL: nil)
         } catch {
             webView.loadHTMLString(
                 "<html><body style='font-family:monospace;padding:16px'>"

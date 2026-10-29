@@ -1,10 +1,16 @@
+/// A typed syntax scope such as `keyword`, `string`, or `comment.doc`.
+///
+/// The type is extensible: custom themes may use any string scope.
 public struct HighlightScope: RawRepresentable, Hashable, Sendable, Codable, ExpressibleByStringLiteral {
+    /// The scope text used by theme data.
     public let rawValue: String
 
+    /// Creates a scope from its theme identifier.
     public init(rawValue: String) {
         self.rawValue = rawValue
     }
 
+    /// Creates a scope from a string literal.
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }

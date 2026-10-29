@@ -225,8 +225,8 @@ private struct StatusPill: View {
     }
 }
 
-private extension View {
-    func demoCard() -> some View {
+extension View {
+    fileprivate func demoCard() -> some View {
         padding(14)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .background(.background, in: RoundedRectangle(cornerRadius: 14))
@@ -237,7 +237,7 @@ private extension View {
     }
 }
 
-private extension Color {
-    static let demoPaper = Color(red: 0.965, green: 0.953, blue: 0.925)
-    static let demoAccent = Color(red: 0.18, green: 0.42, blue: 0.39)
+extension Color {
+    fileprivate static let demoPaper = Color(red: 0.965, green: 0.953, blue: 0.925)
+    fileprivate static let demoAccent = Color(red: 0.18, green: 0.42, blue: 0.39)
 }

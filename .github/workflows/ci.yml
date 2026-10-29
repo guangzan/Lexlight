@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  resources-and-lint:
+    name: Resources, format, and lint
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install JavaScript tooling
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify generated resources
+        run: |
+          pnpm run verify:highlights
+          cmp LICENSE Sources/Lexlight/Resources/Lexlight-LICENSE.md
+          cmp NOTICE.md Sources/Lexlight/Resources/Lexlight-NOTICE.md
+
+      - name: Rebuild resources and reject drift
+        run: |
+          pnpm run build:highlights
+          git diff --exit-code -- Sources/Lexlight/Resources
+
+      - name: Swift format
+        run: xcrun swift-format lint --strict --recursive Sources Tests Examples Package.swift
+
+      - name: SwiftLint
+        run: |
+          brew list swiftlint >/dev/null 2>&1 || brew install swiftlint
+          swiftlint lint --strict
+
+      - name: Shell syntax
+        run: bash -n scripts/*.sh
+
+      - name: Version metadata
+        run: bash scripts/verify-release.sh
+
+  macos:
+    name: macOS tests and DocC
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and test
+        run: |
+          swift build
+          swift test
+
+      - name: Build macOS example
+        run: xcodebuild -scheme LexlightDemo -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
+
+      - name: Build DocC
+        run: |
+          swift package dump-symbol-graph --minimum-access-level public
+          mkdir -p .build/lexlight-symbolgraph
+          cp .build/out/symbolgraph/Lexlight.symbols.json .build/lexlight-symbolgraph/
+          xcrun docc convert Sources/Lexlight/Lexlight.docc \
+            --additional-symbol-graph-dir .build/lexlight-symbolgraph \
+            --output-path .build/Lexlight.doccarchive \
+            --warnings-as-errors
+
+  ios:
+    name: iOS simulator tests
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select an available iPhone simulator
+        id: simulator
+        run: |
+          device_id="$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ { print $2; exit }')"
+          test -n "$device_id"
+          echo "id=$device_id" >> "$GITHUB_OUTPUT"
+
+      - name: Test on iOS simulator
+        run: |
+          xcodebuild -scheme Lexlight-Package \
+            -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.id }}' \
+            CODE_SIGNING_ALLOWED=NO test
+
+      - name: Build iOS example
+        run: |
+          xcodebuild -scheme LexlightDemo \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build

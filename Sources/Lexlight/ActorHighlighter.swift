@@ -1,3 +1,8 @@
+/// The actor-backed production highlighter.
+///
+/// One instance serializes work through a single JavaScript runtime. Create a
+/// highlighter when the screen or document is created and keep it for the
+/// lifetime of that surface so tokenizer startup is paid once.
 public actor ActorHighlighter: Highlighter {
     private let engine: any TokenizationEngine
     private let registry: ThemeRegistry
@@ -14,6 +19,9 @@ public actor ActorHighlighter: Highlighter {
         self.defaultTheme = defaultTheme
     }
 
+    /// Creates a highlighter and selects JavaScriptCore or WebKit automatically.
+    ///
+    /// - Parameter themeID: The default theme used when a request has no explicit theme.
     public init(
         themeID: String = "github-light"
     ) async throws {
@@ -28,6 +36,10 @@ public actor ActorHighlighter: Highlighter {
         )
     }
 
+    /// Returns a new shared-style highlighter using the default theme.
+    ///
+    /// The method creates an independent actor for each call. Keep a reference
+    /// when repeated highlighting should share one engine instance.
     public static func shared() async throws -> ActorHighlighter {
         try await ActorHighlighter()
     }
@@ -37,6 +49,7 @@ public actor ActorHighlighter: Highlighter {
         await engine.kind
     }
 
+    /// Returns the language identifiers reported by the active runtime.
     public func supportedLanguages() async throws -> [String] {
         if let cachedLanguages {
             return cachedLanguages
@@ -48,6 +61,7 @@ public actor ActorHighlighter: Highlighter {
         return languages
     }
 
+    /// Tokenizes source while honoring Swift task cancellation.
     public func tokenize(
         _ source: String,
         language: HighlightLanguage,
@@ -72,6 +86,7 @@ public actor ActorHighlighter: Highlighter {
         )
     }
 
+    /// Looks up a bundled theme by identifier.
     public func theme(identifier: String) throws -> HighlightTheme {
         guard let theme = registry.theme(identifier: identifier) else {
             throw LexlightError.invalidTheme(identifier)

@@ -1,5 +1,9 @@
 import Foundation
 
+/// Packaged JavaScript, CSS, and theme assets for host-owned WebViews.
+///
+/// Lexlight does not create or retain a `WKWebView`. Hosts decide when to load,
+/// inject, cache, or reload these resources.
 public enum LexlightResources {
     /// The Swift package resource bundle containing Lexlight's generated assets.
     public static var bundle: Bundle {
@@ -11,9 +15,19 @@ public enum LexlightResources {
         try resource(named: "lexlight-highlights", extension: "js")
     }
 
+    /// Alias for ``javascriptURL()`` that names the intended WebView use.
+    public static func webViewScriptURL() throws -> URL {
+        try javascriptURL()
+    }
+
     /// Baseline stylesheet for highlighted `pre code` blocks.
     public static func stylesheetURL() throws -> URL {
         try resource(named: "lexlight", extension: "css")
+    }
+
+    /// Alias for ``stylesheetURL()`` that names the intended WebView use.
+    public static func webViewStylesheetURL() throws -> URL {
+        try stylesheetURL()
     }
 
     /// The typed theme catalogue serialized for Swift.

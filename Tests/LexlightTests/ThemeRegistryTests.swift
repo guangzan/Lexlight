@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Lexlight
 
 final class ThemeRegistryTests: XCTestCase {

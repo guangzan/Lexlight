@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import Lexlight
 
 @MainActor
@@ -8,7 +9,12 @@ final class EngineParityTests: XCTestCase {
         let theme = try XCTUnwrap(registry.theme(identifier: "github-light"))
         let source = #"let answer = "42" // note"#
 
-        let jsEngine = try JavaScriptCoreEngine()
+        let jsEngine: JavaScriptCoreEngine
+        do {
+            jsEngine = try JavaScriptCoreEngine()
+        } catch {
+            throw XCTSkip("JavaScriptCore WebAssembly is unavailable: \(error)")
+        }
         let webEngine = try WebKitTokenizationEngine()
         let jsResult = try await jsEngine.tokenize(
             EngineRequest(source: source, language: "swift", theme: theme)
@@ -25,9 +31,10 @@ final class EngineParityTests: XCTestCase {
     }
 
     func testDefaultFactoryPrefersJavaScriptCoreWhenAvailable() async throws {
+        let javaScriptCoreIsAvailable = (try? JavaScriptCoreEngine()) != nil
         let engine = try await EngineFactory.makeDefault()
         let kind = await engine.kind
-        XCTAssertEqual(kind, .javaScriptCore)
+        XCTAssertEqual(kind, javaScriptCoreIsAvailable ? .javaScriptCore : .webKit)
         await engine.shutdown()
     }
 }

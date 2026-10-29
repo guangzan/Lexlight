@@ -2,8 +2,13 @@ import Foundation
 import SwiftUI
 
 @MainActor
-public extension HighlightResult {
-    func attributedString(
+extension HighlightResult {
+    /// Renders the token stream as a SwiftUI `AttributedString`.
+    ///
+    /// - Parameters:
+    ///   - baseFont: Font applied to the full source before token traits.
+    ///   - defaultForeground: Fallback when the result has no theme foreground.
+    public func attributedString(
         baseFont: Font? = nil,
         defaultForeground: Color? = nil
     ) -> AttributedString {

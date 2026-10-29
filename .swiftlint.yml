@@ -1,0 +1,38 @@
+included:
+  - Sources
+  - Tests
+  - Examples
+
+excluded:
+  - .build
+  - .swiftpm
+  - node_modules
+  - Sources/Lexlight/Resources
+
+disabled_rules:
+  - opening_brace
+  - trailing_comma
+
+line_length:
+  warning: 120
+  error: 160
+
+file_length:
+  warning: 1000
+  error: 1200
+
+function_body_length:
+  warning: 100
+  error: 150
+
+type_body_length:
+  warning: 600
+  error: 800
+
+cyclomatic_complexity:
+  warning: 20
+  error: 30
+
+identifier_name:
+  min_length: 1
+  max_length: 60

@@ -1,11 +1,13 @@
 // swift-tools-version: 6.0
 import PackageDescription
 
+let lexlightVersion = "1.0.0"
+
 let package = Package(
     name: "Lexlight",
     platforms: [
         .macOS(.v14),
-        .iOS(.v17)
+        .iOS(.v17),
     ],
     products: [
         .library(
@@ -18,7 +20,8 @@ let package = Package(
         .target(
             name: "Lexlight",
             resources: [
-                .process("Resources")
+                .process("Resources"),
+                .process("Lexlight.docc"),
             ]
         ),
         .testTarget(
@@ -29,7 +32,7 @@ let package = Package(
             name: "LexlightDemo",
             dependencies: ["Lexlight"],
             path: "Examples/LexlightDemo/Sources/LexlightDemo"
-        )
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
