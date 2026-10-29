@@ -74,8 +74,10 @@ jobs:
       - name: Build DocC
         run: |
           swift package dump-symbol-graph --minimum-access-level public
+          symbols="$(find .build -path '*/symbolgraph/Lexlight.symbols.json' -print -quit)"
+          test -n "$symbols"
           mkdir -p .build/lexlight-symbolgraph
-          cp .build/out/symbolgraph/Lexlight.symbols.json .build/lexlight-symbolgraph/
+          cp "$symbols" .build/lexlight-symbolgraph/
           xcrun docc convert Sources/Lexlight/Lexlight.docc \
             --additional-symbol-graph-dir .build/lexlight-symbolgraph \
             --output-path .build/Lexlight.doccarchive \
