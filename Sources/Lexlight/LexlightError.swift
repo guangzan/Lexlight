@@ -6,6 +6,7 @@ public enum LexlightError: Error, Sendable, Equatable, LocalizedError {
     case runtimeUnavailable(String)
     case scriptEvaluationFailed(String)
     case decodingFailed(String)
+    case serializationFailed(String)
     case invalidTheme(String)
     case cancelled
 
@@ -21,6 +22,8 @@ public enum LexlightError: Error, Sendable, Equatable, LocalizedError {
             "Lexlight JavaScript evaluation failed: \(reason)"
         case .decodingFailed(let reason):
             "Lexlight could not decode tokenizer output: \(reason)"
+        case .serializationFailed(let reason):
+            "Lexlight could not serialize tokenizer input: \(reason)"
         case .invalidTheme(let identifier):
             "Lexlight theme is unavailable: \(identifier)"
         case .cancelled:
