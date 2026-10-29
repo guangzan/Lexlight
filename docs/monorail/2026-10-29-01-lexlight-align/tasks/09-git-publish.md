@@ -1,6 +1,6 @@
 # 09 — Repository initialisation and GitHub publication
 
-Status: open
+Status: done
 Blocked by: 08
 Seams: `git status`, `git log`, remote branch, GitHub Actions run
 Touchpoints: `.git/**`, `README.md`, repository settings
@@ -13,8 +13,17 @@ account, push the repository, and confirm the default branch and CI status.
 
 ## Acceptance criteria
 
-- [ ] No build artifacts, secrets, or node modules are tracked.
-- [ ] Full local test and verification suite is green before push.
-- [ ] GitHub remote points to the Lexlight repository and `main` is pushed.
-- [ ] Default branch is `main` and CI has started or completed.
-- [ ] Published README renders with correct English/Chinese switching.
+- [x] No build artifacts, secrets, or node modules are tracked.
+- [x] Full local test and verification suite is green before push.
+- [x] GitHub remote points to the Lexlight repository and `main` is pushed.
+- [x] Default branch is `main` and CI has started or completed.
+- [x] Published README renders with correct English/Chinese switching.
+
+## Comments
+
+Run 2026-10-29: start — 0c8def8
+done — pending task commit
+- seams used: git status, local release gates, GitHub remote/default branch, GitHub Actions run 40845242409
+- typecheck: green
+- relevant tests: green (`swift test`, 21 tests; macOS/iOS demo builds; DocC no warnings; resource drift check; GitHub Actions macOS and iOS jobs)
+- acceptance criteria: met
