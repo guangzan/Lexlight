@@ -1,22 +1,27 @@
 import Foundation
 
 public enum LexlightResources {
+    /// The Swift package resource bundle containing Lexlight's generated assets.
     public static var bundle: Bundle {
         .module
     }
 
+    /// JavaScript that installs `globalThis.Lexlight` in a browser document.
     public static func javascriptURL() throws -> URL {
         try resource(named: "lexlight-highlights", extension: "js")
     }
 
+    /// Baseline stylesheet for highlighted `pre code` blocks.
     public static func stylesheetURL() throws -> URL {
         try resource(named: "lexlight", extension: "css")
     }
 
+    /// The typed theme catalogue serialized for Swift.
     public static func themesURL() throws -> URL {
         try resource(named: "themes", extension: "json")
     }
 
+    /// Reads the generated JavaScript as UTF-8 for host-owned injection.
     public static func javascript() throws -> String {
         do {
             return try String(contentsOf: javascriptURL(), encoding: .utf8)
@@ -24,6 +29,17 @@ public enum LexlightResources {
             throw error
         } catch {
             throw LexlightError.resourceMissing("lexlight-highlights.js")
+        }
+    }
+
+    /// Reads the baseline stylesheet as UTF-8 for host-owned injection.
+    public static func stylesheet() throws -> String {
+        do {
+            return try String(contentsOf: stylesheetURL(), encoding: .utf8)
+        } catch let error as LexlightError {
+            throw error
+        } catch {
+            throw LexlightError.resourceMissing("lexlight.css")
         }
     }
 

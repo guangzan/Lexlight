@@ -1,6 +1,6 @@
 # 06 — Host WebView contract
 
-Status: open
+Status: done
 Blocked by: 02
 Seams: `Tests/LexlightTests/WebResourceTests.swift` real `WKWebView` seam.
 Touchpoints: `Sources/Lexlight/Resources/**`, `Sources/Lexlight/Web/**`, `Tests/LexlightTests/WebResourceTests.swift`
@@ -15,8 +15,17 @@ documentation comments for host-owned injection, and test the generated
 
 ## Acceptance criteria
 
-- [ ] Host can locate JS and CSS resources through public Swift API.
-- [ ] `Lexlight.highlightAll` leaves unsupported/configuration blocks untouched.
-- [ ] `Lexlight.tokenize` returns the same normalized data as the native bridge.
-- [ ] Theme changes repaint existing test blocks through the public API.
-- [ ] Missing resources throw a stable `LexlightError`.
+- [x] Host can locate JS and CSS resources through public Swift API.
+- [x] `Lexlight.highlightAll` leaves unsupported/configuration blocks untouched.
+- [x] `Lexlight.tokenize` returns the same normalized data as the native bridge.
+- [x] Theme changes repaint existing test blocks through the public API.
+- [x] Missing resources throw a stable `LexlightError`.
+
+## Comments
+
+Run 2026-10-29: start — fe029cf
+done — pending task commit
+- seams used: `Tests/LexlightTests/WebResourceTests.swift` real `WKWebView` seam
+- typecheck: green
+- relevant tests: green (`swift test`, 19 tests)
+- acceptance criteria: met
