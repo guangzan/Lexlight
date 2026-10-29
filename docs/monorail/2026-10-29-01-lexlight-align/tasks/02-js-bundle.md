@@ -1,6 +1,6 @@
 # 02 — Reproducible JavaScript bundle and registry data
 
-Status: open
+Status: done
 Blocked by: 01
 Seams: `scripts/highlights/verify.mjs` generated-resource check; `Tests/LexlightTests/ResourceTests.swift` packaged-resource seam.
 Touchpoints: `package.json`, `pnpm-lock.yaml`, `scripts/highlights/**`, `Sources/Lexlight/Resources/**`, `Vendor/**`
@@ -15,8 +15,17 @@ for upstream version, language count, theme count, and generated banner.
 
 ## Acceptance criteria
 
-- [ ] `pnpm run build:highlights` regenerates the committed bundle.
-- [ ] `pnpm run verify:highlights` fails on drift or missing notices.
-- [ ] Bundle exposes `globalThis.Lexlight` with the documented functions.
-- [ ] Bundle contains all upstream languages and usable themes.
-- [ ] No Node.js toolchain is required by Swift package consumers.
+- [x] `pnpm run build:highlights` regenerates the committed bundle.
+- [x] `pnpm run verify:highlights` fails on drift or missing notices.
+- [x] Bundle exposes `globalThis.Lexlight` with the documented functions.
+- [x] Bundle contains all upstream languages and usable themes.
+- [x] No Node.js toolchain is required by Swift package consumers.
+
+## Comments
+
+Run 2026-10-29: start — 38e3836
+done — pending task commit
+- seams used: `scripts/highlights/verify.mjs`, `Tests/LexlightTests/ResourceTests.swift`
+- typecheck: green
+- relevant tests: green (`pnpm run verify:highlights`, `swift test`)
+- acceptance criteria: met
