@@ -1,6 +1,6 @@
 # 05 — AppKit/UIKit and SwiftUI renderers
 
-Status: open
+Status: done
 Blocked by: 01, 03
 Seams: `Tests/LexlightTests/RenderingTests.swift` public rendering seam.
 Touchpoints: `Sources/Lexlight/Rendering/**`, `Sources/Lexlight/HighlightResult.swift`, `Tests/LexlightTests/RenderingTests.swift`
@@ -15,8 +15,17 @@ edge.
 
 ## Acceptance criteria
 
-- [ ] Both renderers preserve the source and UTF-16 token ranges exactly.
-- [ ] sRGB hex colours map correctly for 3/4/6/8-digit forms.
-- [ ] Font traits apply without mutating unrelated ranges.
-- [ ] Rendering is main-actor isolated and has no tokenizer dependency.
-- [ ] Tests cover emoji, multi-line code, and theme background/foreground.
+- [x] Both renderers preserve the source and UTF-16 token ranges exactly.
+- [x] sRGB hex colours map correctly for 3/4/6/8-digit forms.
+- [x] Font traits apply without mutating unrelated ranges.
+- [x] Rendering is main-actor isolated and has no tokenizer dependency.
+- [x] Tests cover emoji, multi-line code, and theme background/foreground.
+
+## Comments
+
+Run 2026-10-29: start — d1b992a
+done — pending task commit
+- seams used: `Tests/LexlightTests/RenderingTests.swift`
+- typecheck: green
+- relevant tests: green (`swift test`, 17 tests)
+- acceptance criteria: met
