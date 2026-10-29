@@ -1,9 +1,15 @@
 enum EngineFactory {
-    static func makeDefault() throws -> any TokenizationEngine {
-        #if os(macOS)
-        return try JavaScriptCoreEngine()
-        #else
-        throw LexlightError.runtimeUnavailable("WebKit fallback is not wired yet.")
-        #endif
+    static func makeDefault() async throws -> any TokenizationEngine {
+        do {
+            return try JavaScriptCoreEngine()
+        } catch {
+            do {
+                return try await WebKitTokenizationEngine()
+            } catch let fallbackError {
+                throw LexlightError.runtimeUnavailable(
+                    "JavaScriptCore: \(error.localizedDescription); WebKit: \(fallbackError.localizedDescription)"
+                )
+            }
+        }
     }
 }

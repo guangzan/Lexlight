@@ -16,20 +16,20 @@ public actor ActorHighlighter: Highlighter {
 
     public init(
         themeID: String = "github-light"
-    ) throws {
+    ) async throws {
         let registry = try ThemeRegistry.bundled()
         guard let theme = registry.theme(identifier: themeID) else {
             throw LexlightError.invalidTheme(themeID)
         }
         self.init(
-            engine: try EngineFactory.makeDefault(),
+            engine: try await EngineFactory.makeDefault(),
             registry: registry,
             defaultTheme: theme
         )
     }
 
-    public static func shared() throws -> ActorHighlighter {
-        try ActorHighlighter()
+    public static func shared() async throws -> ActorHighlighter {
+        try await ActorHighlighter()
     }
 
     func activeEngine() async -> TokenizationEngineKind {
