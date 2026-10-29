@@ -1,0 +1,11 @@
+:root {
+  --lexlight-radius: 8px;
+  --lexlight-padding: 1rem;
+}
+
+pre code.hljs.highlights {
+  display: block;
+  overflow-x: auto;
+  border-radius: var(--lexlight-radius);
+  padding: var(--lexlight-padding);
+}

@@ -1,0 +1,10 @@
+.build/
+.packages/
+*.xcworkspace
+DerivedData/
+.swiftpm/
+Test-Output/
+.xcscheme.local
+.xcshareddata/xcschemes/*.xcscheme.override
+*.log
+.DS_Store

@@ -1,0 +1,30 @@
+{
+  "themes": [
+    {
+      "id": "github-light",
+      "name": "GitHub Light",
+      "appearance": "light",
+      "foreground": "#24292E",
+      "background": "#FFFFFF",
+      "syntax": {
+        "keyword": { "color": "#D73A49" },
+        "string": { "color": "#032F62" },
+        "comment": { "color": "#6A737D", "font_style": 1 },
+        "number": { "color": "#005CC5" }
+      }
+    },
+    {
+      "id": "one-dark-pro",
+      "name": "One Dark Pro",
+      "appearance": "dark",
+      "foreground": "#ABB2BF",
+      "background": "#282C34",
+      "syntax": {
+        "keyword": { "color": "#C678DD" },
+        "string": { "color": "#98C379" },
+        "comment": { "color": "#7F848E", "font_style": 1 },
+        "number": { "color": "#D19A66" }
+      }
+    }
+  ]
+}
